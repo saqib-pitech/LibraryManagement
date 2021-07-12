@@ -36,7 +36,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Label Content="Member Code"    Grid.Row="0" Grid.Column="0"/>
-            <TextBox Text="{Binding UI_MemberCode}"   Grid.Row="1"    Grid.Column="1" />
+            <TextBox Text="{Binding UI_MemberCode}" LostFocus="{Binding LoadMemberCommand}"  Grid.Row="1"    Grid.Column="1" />
             
             <Label Content="Member Name"    Grid.Row="1" Grid.Column="0"/>
             <TextBlock Text="{Binding UI_MemberName}"  Grid.Row="1" Grid.Column="1"/>

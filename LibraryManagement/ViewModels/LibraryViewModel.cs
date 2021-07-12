@@ -122,7 +122,10 @@ namespace LibraryManagement.ViewModels
         {
             return true;
         }
+        //public void LoadMember()
+        //{
 
+        //}
         #endregion
     }
 }
