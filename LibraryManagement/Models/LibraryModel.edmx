@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TRAININGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BOOK">
+          <Key>
+            <PropertyRef Name="BOOKCODE" />
+          </Key>
+          <Property Name="BOOKCODE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BOOKNAME" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="AUTHOR" Type="varchar" MaxLength="80" />
+          <Property Name="ISISSUABLE" Type="bit" Nullable="false" />
+          <Property Name="ISISSUED" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ISSUEBOOK">
+          <Key>
+            <PropertyRef Name="ISSUECODE" />
+          </Key>
+          <Property Name="ISSUECODE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MEMBERCODE" Type="int" Nullable="false" />
+          <Property Name="BOOKCODE" Type="int" Nullable="false" />
+          <Property Name="ISSUEDATE" Type="datetime" Nullable="false" />
+          <Property Name="DUEDATE" Type="datetime" Nullable="false" />
+          <Property Name="RETURNDATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MEMBER">
+          <Key>
+            <PropertyRef Name="MEMBERCODE" />
+          </Key>
+          <Property Name="MEMBERCODE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MEMBERNAME" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="MEMBERTYPEID" Type="int" Nullable="false" />
+          <Property Name="NO_OF_BOOKISSUED" Type="int" />
+        </EntityType>
+        <EntityType Name="MEMBERTYPE">
+          <Key>
+            <PropertyRef Name="MEMBERTYPEID" />
+          </Key>
+          <Property Name="MEMBERTYPEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MEMBERTYPE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="NO_OF_BOOKALLOWED" Type="int" Nullable="false" />
+          <Property Name="DAYSALLOWED" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BOOK">
+          <End Role="BOOK" Type="Self.BOOK" Multiplicity="1" />
+          <End Role="ISSUEBOOK" Type="Self.ISSUEBOOK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK">
+              <PropertyRef Name="BOOKCODE" />
+            </Principal>
+            <Dependent Role="ISSUEBOOK">
+              <PropertyRef Name="BOOKCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEMBER">
+          <End Role="MEMBER" Type="Self.MEMBER" Multiplicity="1" />
+          <End Role="ISSUEBOOK" Type="Self.ISSUEBOOK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBERCODE" />
+            </Principal>
+            <Dependent Role="ISSUEBOOK">
+              <PropertyRef Name="MEMBERCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEMBERTYPE">
+          <End Role="MEMBERTYPE" Type="Self.MEMBERTYPE" Multiplicity="1" />
+          <End Role="MEMBER" Type="Self.MEMBER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBERTYPE">
+              <PropertyRef Name="MEMBERTYPEID" />
+            </Principal>
+            <Dependent Role="MEMBER">
+              <PropertyRef Name="MEMBERTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TRAININGModelStoreContainer">
+          <EntitySet Name="BOOK" EntityType="Self.BOOK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ISSUEBOOK" EntityType="Self.ISSUEBOOK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEMBER" EntityType="Self.MEMBER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEMBERTYPE" EntityType="Self.MEMBERTYPE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BOOK" Association="Self.FK_BOOK">
+            <End Role="BOOK" EntitySet="BOOK" />
+            <End Role="ISSUEBOOK" EntitySet="ISSUEBOOK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEMBER" Association="Self.FK_MEMBER">
+            <End Role="MEMBER" EntitySet="MEMBER" />
+            <End Role="ISSUEBOOK" EntitySet="ISSUEBOOK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEMBERTYPE" Association="Self.FK_MEMBERTYPE">
+            <End Role="MEMBERTYPE" EntitySet="MEMBERTYPE" />
+            <End Role="MEMBER" EntitySet="MEMBER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TRAININGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BOOK">
+          <Key>
+            <PropertyRef Name="BOOKCODE" />
+          </Key>
+          <Property Name="BOOKCODE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BOOKNAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AUTHOR" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="ISISSUABLE" Type="Boolean" Nullable="false" />
+          <Property Name="ISISSUED" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ISSUEBOOKs" Relationship="Self.FK_BOOK" FromRole="BOOK" ToRole="ISSUEBOOK" />
+        </EntityType>
+        <EntityType Name="ISSUEBOOK">
+          <Key>
+            <PropertyRef Name="ISSUECODE" />
+          </Key>
+          <Property Name="ISSUECODE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MEMBERCODE" Type="Int32" Nullable="false" />
+          <Property Name="BOOKCODE" Type="Int32" Nullable="false" />
+          <Property Name="ISSUEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DUEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RETURNDATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BOOK" Relationship="Self.FK_BOOK" FromRole="ISSUEBOOK" ToRole="BOOK" />
+          <NavigationProperty Name="MEMBER" Relationship="Self.FK_MEMBER" FromRole="ISSUEBOOK" ToRole="MEMBER" />
+        </EntityType>
+        <EntityType Name="MEMBER">
+          <Key>
+            <PropertyRef Name="MEMBERCODE" />
+          </Key>
+          <Property Name="MEMBERCODE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MEMBERNAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MEMBERTYPEID" Type="Int32" Nullable="false" />
+          <Property Name="NO_OF_BOOKISSUED" Type="Int32" />
+          <NavigationProperty Name="ISSUEBOOKs" Relationship="Self.FK_MEMBER" FromRole="MEMBER" ToRole="ISSUEBOOK" />
+          <NavigationProperty Name="MEMBERTYPE" Relationship="Self.FK_MEMBERTYPE" FromRole="MEMBER" ToRole="MEMBERTYPE" />
+        </EntityType>
+        <EntityType Name="MEMBERTYPE">
+          <Key>
+            <PropertyRef Name="MEMBERTYPEID" />
+          </Key>
+          <Property Name="MEMBERTYPEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MEMBERTYPE1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NO_OF_BOOKALLOWED" Type="Int32" Nullable="false" />
+          <Property Name="DAYSALLOWED" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MEMBERs" Relationship="Self.FK_MEMBERTYPE" FromRole="MEMBERTYPE" ToRole="MEMBER" />
+        </EntityType>
+        <Association Name="FK_BOOK">
+          <End Role="BOOK" Type="Self.BOOK" Multiplicity="1" />
+          <End Role="ISSUEBOOK" Type="Self.ISSUEBOOK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK">
+              <PropertyRef Name="BOOKCODE" />
+            </Principal>
+            <Dependent Role="ISSUEBOOK">
+              <PropertyRef Name="BOOKCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEMBER">
+          <End Role="MEMBER" Type="Self.MEMBER" Multiplicity="1" />
+          <End Role="ISSUEBOOK" Type="Self.ISSUEBOOK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER">
+              <PropertyRef Name="MEMBERCODE" />
+            </Principal>
+            <Dependent Role="ISSUEBOOK">
+              <PropertyRef Name="MEMBERCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MEMBERTYPE">
+          <End Role="MEMBERTYPE" Type="Self.MEMBERTYPE" Multiplicity="1" />
+          <End Role="MEMBER" Type="Self.MEMBER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBERTYPE">
+              <PropertyRef Name="MEMBERTYPEID" />
+            </Principal>
+            <Dependent Role="MEMBER">
+              <PropertyRef Name="MEMBERTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TRAININGEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BOOKs" EntityType="Self.BOOK" />
+          <EntitySet Name="ISSUEBOOKs" EntityType="Self.ISSUEBOOK" />
+          <EntitySet Name="MEMBERs" EntityType="Self.MEMBER" />
+          <EntitySet Name="MEMBERTYPEs" EntityType="Self.MEMBERTYPE" />
+          <AssociationSet Name="FK_BOOK" Association="Self.FK_BOOK">
+            <End Role="BOOK" EntitySet="BOOKs" />
+            <End Role="ISSUEBOOK" EntitySet="ISSUEBOOKs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEMBER" Association="Self.FK_MEMBER">
+            <End Role="MEMBER" EntitySet="MEMBERs" />
+            <End Role="ISSUEBOOK" EntitySet="ISSUEBOOKs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MEMBERTYPE" Association="Self.FK_MEMBERTYPE">
+            <End Role="MEMBERTYPE" EntitySet="MEMBERTYPEs" />
+            <End Role="MEMBER" EntitySet="MEMBERs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TRAININGModelStoreContainer" CdmEntityContainer="TRAININGEntities">
+          <EntitySetMapping Name="BOOKs">
+            <EntityTypeMapping TypeName="TRAININGModel.BOOK">
+              <MappingFragment StoreEntitySet="BOOK">
+                <ScalarProperty Name="BOOKCODE" ColumnName="BOOKCODE" />
+                <ScalarProperty Name="BOOKNAME" ColumnName="BOOKNAME" />
+                <ScalarProperty Name="AUTHOR" ColumnName="AUTHOR" />
+                <ScalarProperty Name="ISISSUABLE" ColumnName="ISISSUABLE" />
+                <ScalarProperty Name="ISISSUED" ColumnName="ISISSUED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ISSUEBOOKs">
+            <EntityTypeMapping TypeName="TRAININGModel.ISSUEBOOK">
+              <MappingFragment StoreEntitySet="ISSUEBOOK">
+                <ScalarProperty Name="ISSUECODE" ColumnName="ISSUECODE" />
+                <ScalarProperty Name="MEMBERCODE" ColumnName="MEMBERCODE" />
+                <ScalarProperty Name="BOOKCODE" ColumnName="BOOKCODE" />
+                <ScalarProperty Name="ISSUEDATE" ColumnName="ISSUEDATE" />
+                <ScalarProperty Name="DUEDATE" ColumnName="DUEDATE" />
+                <ScalarProperty Name="RETURNDATE" ColumnName="RETURNDATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEMBERs">
+            <EntityTypeMapping TypeName="TRAININGModel.MEMBER">
+              <MappingFragment StoreEntitySet="MEMBER">
+                <ScalarProperty Name="MEMBERCODE" ColumnName="MEMBERCODE" />
+                <ScalarProperty Name="MEMBERNAME" ColumnName="MEMBERNAME" />
+                <ScalarProperty Name="MEMBERTYPEID" ColumnName="MEMBERTYPEID" />
+                <ScalarProperty Name="NO_OF_BOOKISSUED" ColumnName="NO_OF_BOOKISSUED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEMBERTYPEs">
+            <EntityTypeMapping TypeName="TRAININGModel.MEMBERTYPE">
+              <MappingFragment StoreEntitySet="MEMBERTYPE">
+                <ScalarProperty Name="MEMBERTYPEID" ColumnName="MEMBERTYPEID" />
+                <ScalarProperty Name="MEMBERTYPE1" ColumnName="MEMBERTYPE" />
+                <ScalarProperty Name="NO_OF_BOOKALLOWED" ColumnName="NO_OF_BOOKALLOWED" />
+                <ScalarProperty Name="DAYSALLOWED" ColumnName="DAYSALLOWED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
